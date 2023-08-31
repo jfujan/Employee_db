@@ -57,6 +57,10 @@ function mainPrompt() {
                 showRoles();
                 break;
 
+                case "VIEW_ALL_EMPLOYEES":
+                showEmployees();
+                break;
+
                 default: 
                 process.exit();
         }
@@ -83,6 +87,17 @@ function showRoles(){
       let roles = rows;
       console.log("\n");
       console.table(roles);
+    })
+    .then(() => mainPrompt());
+}
+
+function showEmployees(){
+    console.log("SHOW employee")
+    myDb.getAllEmployees()
+    .then(([rows]) => {
+      let employees = rows;
+      console.log("\n");
+      console.table(employees);
     })
     .then(() => mainPrompt());
 }
