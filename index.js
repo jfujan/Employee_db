@@ -1,6 +1,6 @@
 const inquirer = require('inquirer');
 const fs = require('fs')
-const myDb = require("./db");
+const myDb = require("./db/dbAccess.js");
 
 const question = [
     {
@@ -46,18 +46,43 @@ const question = [
 function mainPrompt() {
     inquirer.prompt(question)
     .then(answers => {
-        let choice = answers.choice;
+        let choice = answers.options;
 
         switch(choice){
             case "VIEW_ALL_DEPARTMENTS":
                 showDepartments();
                 break;
+
+                case "VIEW_ALL_ROLES":
+                showRoles();
+                break;
+
                 default: 
                 process.exit();
         }
     })
 }
 
+mainPrompt();
+
 function showDepartments(){
-    
+    console.log("SHOW department")
+    myDb.getAllDepartments()
+    .then(([rows]) => {
+      let departments = rows;
+      console.log("\n");
+      console.table(departments);
+    })
+    .then(() => mainPrompt());
+}
+
+function showRoles(){
+    console.log("SHOW role")
+    myDb.getAllRoles()
+    .then(([rows]) => {
+      let roles = rows;
+      console.log("\n");
+      console.table(roles);
+    })
+    .then(() => mainPrompt());
 }
