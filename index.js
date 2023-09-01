@@ -2,6 +2,14 @@ const inquirer = require('inquirer');
 const fs = require('fs')
 const myDb = require("./db/dbAccess.js");
 
+const departmentPrompt = [
+    {
+        name: "addedDepartment",
+        type: "input",
+        message: "What is the name of this department?"
+    }
+];
+
 const question = [
     {
         type: "list",
@@ -44,7 +52,8 @@ const question = [
 ];
 
 function mainPrompt() {
-    inquirer.prompt(question)
+    inquirer
+    .prompt(question)
     .then(answers => {
         let choice = answers.options;
 
@@ -61,6 +70,10 @@ function mainPrompt() {
                 showEmployees();
                 break;
 
+                case "ADD_DEPARTMENT":
+                addDepartment();
+                break;    
+
                 default: 
                 process.exit();
         }
@@ -69,7 +82,7 @@ function mainPrompt() {
 
 mainPrompt();
 
-function showDepartments(){
+function showDepartments() {
     console.log("SHOW department")
     myDb.getAllDepartments()
     .then(([rows]) => {
@@ -80,7 +93,7 @@ function showDepartments(){
     .then(() => mainPrompt());
 }
 
-function showRoles(){
+function showRoles() {
     console.log("SHOW role")
     myDb.getAllRoles()
     .then(([rows]) => {
@@ -91,7 +104,7 @@ function showRoles(){
     .then(() => mainPrompt());
 }
 
-function showEmployees(){
+function showEmployees() {
     console.log("SHOW employee")
     myDb.getAllEmployees()
     .then(([rows]) => {
@@ -101,3 +114,13 @@ function showEmployees(){
     })
     .then(() => mainPrompt());
 }
+
+function addDepartment() {
+    inquirer.prompt(departmentPrompt)
+    .then(async answers => {
+        //console.log(answers)
+        await myDb.createDepartment(answers.addedDepartment);
+    })
+    .then(() => mainPrompt());
+}
+
