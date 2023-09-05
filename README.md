@@ -1,4 +1,4 @@
-# Employee_db
+# Employee Database
 ## Description
 This app is a database of employees using SQL. It is also a command-line application that can show all the tables in the database, add data to those tables, and update existing data in those tables
 
