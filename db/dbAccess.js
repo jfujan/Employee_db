@@ -30,6 +30,26 @@ class DbAccess {
             `INSERT INTO department(department_name) VALUES (?)`, department
         );
     }
+
+    createRole(role, salary, departmentId) {
+        console.log(role, salary, departmentId)
+        return this.connection.promise().query(
+            `INSERT INTO role(title, salary, department_id) VALUES (?,?,?)`, [role, salary, departmentId]
+        );
+    }
+
+    createEmployee(firstName, lastName, roleId, managerId) {
+      console.log(firstName, lastName, roleId, managerId)
+      return this.connection.promise().query(
+          `INSERT INTO employee(first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)`, [firstName, lastName, roleId, managerId]
+      );
+  }
+
+  changeRole(roleID, employeeID) {
+    return this.connection.promise().query(
+      `UPDATE employee SET role_id = (?) WHERE id = (?)`, [roleID, employeeID]
+    );
+  }
 }
     
 module.exports = new DbAccess(connection);

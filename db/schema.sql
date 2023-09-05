@@ -1,3 +1,4 @@
+-- Active: 1693873023520@@127.0.0.1@3306@employee_db
 DROP DATABASE IF EXISTS employee_db;
 CREATE DATABASE employee_db;
 
@@ -31,3 +32,7 @@ CREATE TABLE employee (
     REFERENCES employee(id)
     ON DELETE SET NULL
 );
+
+SELECT * FROM role;
+
+UPDATE employee SET role_id = 3 WHERE id = 7;

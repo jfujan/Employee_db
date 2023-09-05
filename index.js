@@ -10,6 +10,60 @@ const departmentPrompt = [
     }
 ];
 
+const rolePrompt = [
+    {
+        name: "addedRole",
+        type: "input",
+        message: "What is the name of this role?"
+    },
+    {
+        name: "salary",
+        type: "input",
+        message: "What is the base salary?"
+    },
+    {
+        name: "departmentId",
+        type: "input",
+        message: "What is the department ID?"
+    }
+]
+
+const employeePrompt = [
+    {
+        name: "addedFirstName",
+        type: "input",
+        message: "What is the employees first name?"
+    },
+    {
+        name: "addedLastName",
+        type: "input",
+        message: "What is the employees last name?"
+    },
+    {
+        name: "roleId",
+        type: "input",
+        message: "What is this employees role ID?"
+    },
+    {
+        name: "managerId",
+        type: "input",
+        message: "What is this employees manager ID?"
+    }
+]
+
+const updatePrompt = [
+    {
+        name: "employeeID",
+        type: "input",
+        message: "What is the ID of the employee whose role you want to change?"
+    },
+    {
+        name: "roleID",
+        type: "input",
+        message: "What is the ID of the role you want to change them to?"
+    }
+]
+
 const question = [
     {
         type: "list",
@@ -22,7 +76,7 @@ const question = [
             },
             { 
                 name:"Add Employee", 
-                value: "ADD_EMPOLYEE"
+                value: "ADD_EMPLOYEE"
             },
             {
                 name: "Update Employee Role", 
@@ -72,7 +126,19 @@ function mainPrompt() {
 
                 case "ADD_DEPARTMENT":
                 addDepartment();
-                break;    
+                break; 
+                
+                case "ADD_ROLE":
+                addRole();
+                break;
+
+                case "ADD_EMPLOYEE":
+                addEmployee();
+                break;
+
+                case "UPDATE_EMPLOYEE_ROLE":
+                updateRole();
+                break;
 
                 default: 
                 process.exit();
@@ -124,3 +190,29 @@ function addDepartment() {
     .then(() => mainPrompt());
 }
 
+function addRole() {
+    inquirer.prompt(rolePrompt)
+    .then(async answers => {
+        //console.log(answers)
+        await myDb.createRole(answers.addedRole, answers.salary, answers.departmentId);
+    })
+    .then(() => mainPrompt());
+}
+
+function addEmployee() {
+    inquirer.prompt(employeePrompt)
+    .then(async answers => {
+        //console.log(answers)
+        await myDb.createEmployee(answers.addedFirstName, answers.addedLastName, answers.roleId, answers.managerId);
+    })
+    .then(() => mainPrompt());
+}
+
+function updateRole() {
+    inquirer.prompt(updatePrompt)
+    .then(async answers => {
+        //console.log(answers)
+        await myDb.changeRole(answers.roleID, answers.employeeID);
+    })
+    .then(() => mainPrompt());
+}
